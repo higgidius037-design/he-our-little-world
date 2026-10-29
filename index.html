@@ -1,534 +1,573 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#310b14">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#310b14">
-<title>H&E | Our Little World</title>
-
-<style>
-:root {
-  --wine: #310b14;
-  --burgundy: #70263b;
-  --rose: #c97887;
-  --gold: #e8c58a;
-  --cream: #fff9f1;
-  --blush: #f8e9e6;
-  --ink: #342029;
-  --muted: #806d70;
-  --line: #eadbd4;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--cream);
-  color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-}
-
-button, input, textarea { font: inherit; }
-button { cursor: pointer; }
-
-.app {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-}
-
-.sidebar {
-  background: linear-gradient(180deg, #300a13, #501523, #26070f);
-  color: white;
-  padding: 24px 14px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.brand {
-  text-align: center;
-  padding: 12px 0 28px;
-  border-bottom: 1px solid #ffffff25;
-}
-
-.brand-heart {
-  color: var(--gold);
-  font-size: 38px;
-}
-
-.brand h1 {
-  font-weight: normal;
-  letter-spacing: 3px;
-  margin: 5px 0;
-  font-size: 31px;
-}
-
-.brand p {
-  font-style: italic;
-  color: #eacdd1;
-  margin: 0;
-}
-
-.nav {
-  display: grid;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.nav button {
-  background: transparent;
-  border: 0;
-  color: #f9e9e8;
-  text-align: left;
-  padding: 13px;
-  border-radius: 10px;
-}
-
-.nav button.active,
-.nav button:hover {
-  background: #ffffff19;
-  color: var(--gold);
-}
-
-.sidebar-foot {
-  margin-top: auto;
-  text-align: center;
-  color: var(--gold);
-  font-style: italic;
-  padding: 20px 0;
-}
-
-main {
-  min-width: 0;
-  padding: 25px clamp(14px, 3vw, 38px);
-}
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.topbar h2 {
-  font-size: clamp(23px, 3vw, 33px);
-  font-weight: normal;
-  color: #401521;
-  margin: 0 0 7px;
-}
-
-.topbar p {
-  color: var(--muted);
-  margin: 0;
-}
-
-.avatar {
-  width: 46px;
-  height: 46px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--wine);
-  background: linear-gradient(135deg, var(--rose), var(--gold));
-  border: 3px solid white;
-  box-shadow: 0 0 0 1px var(--line);
-  font-size: 25px;
-}
-
-.page { display: none; }
-.page.active { display: block; }
-
-.hero {
-  min-height: 245px;
-  padding: 30px;
-  border-radius: 16px;
-  color: white;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-  background:
-    linear-gradient(90deg, #260b12e8 0%, #32121a9c 48%, #32121a08 100%),
-    linear-gradient(145deg, #edb38b, #b96c68 42%, #51253a 75%, #211020);
-}
-
-.hero:after {
-  content: "♡";
-  position: absolute;
-  right: 9%;
-  bottom: -35px;
-  font-size: 190px;
-  color: #ffffff12;
-}
-
-.hero-copy {
-  max-width: 370px;
-  position: relative;
-  z-index: 1;
-}
-
-.eyebrow {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--gold);
-}
-
-.hero h1 {
-  font-size: clamp(34px, 4vw, 48px);
-  line-height: 1.12;
-  font-weight: normal;
-  margin: 15px 0;
-}
-
-.hero h1 em { font-weight: normal; }
-
-.hero p {
-  line-height: 1.5;
-  font-size: 16px;
-  color: #fff0e9;
-}
-
-.hero-heart {
-  color: var(--gold);
-  font-size: 28px;
-}
-
-.quick-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin: 16px 0;
-}
-
-.quick {
-  background: linear-gradient(145deg, #fffdfa, #fbf0e9);
-  border: 1px solid var(--line);
-  color: var(--burgundy);
-  border-radius: 13px;
-  padding: 17px 7px;
-  text-align: center;
-  box-shadow: 0 3px 12px #42122108;
-  transition: .2s;
-}
-
-.quick:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px #42122112;
-}
-
-.quick .icon { font-size: 27px; margin-bottom: 9px; }
-.quick strong { display: block; font-size: 14px; font-weight: normal; line-height: 1.35; }
-.quick .arrow { display: block; font-size: 22px; margin-top: 6px; }
-
-.card {
-  margin-top: 16px;
-  padding: 20px;
-  border: 1px solid var(--line);
-  background: #fffdf9;
-  border-radius: 15px;
-  box-shadow: 0 7px 23px #4114220b;
-}
-
-.card-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.card-heading h2,
-.section-title {
-  font-weight: normal;
-  font-size: 24px;
-  color: #4b1825;
-  margin: 0;
-}
-
-.link-button {
-  border: 0;
-  background: transparent;
-  color: var(--burgundy);
-  padding: 5px;
-}
-
-.muted { color: var(--muted); }
-
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.memory { min-width: 0; }
-
-.memory-image {
-  height: 130px;
-  border-radius: 10px;
-  background: linear-gradient(145deg, #f1c5a2, #b76b64 45%, #452032);
-  display: grid;
-  place-items: center;
-  color: white;
-  font-size: 34px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-}
-
-.memory:nth-child(2) .memory-image {
-  background: linear-gradient(135deg, #b8a08b, #7e5448, #422d30);
-}
-
-.memory:nth-child(3) .memory-image {
-  background: linear-gradient(135deg, #e4c3aa, #9d6b65, #43273b);
-}
-
-.memory:nth-child(4) .memory-image {
-  background: linear-gradient(135deg, #9db7bc, #607d85, #304653);
-}
-
-.memory h3 {
-  font-size: 14px;
-  font-weight: normal;
-  margin: 9px 0 4px;
-  overflow-wrap: anywhere;
-}
-
-.memory p {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.lower-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.stat {
-  background: linear-gradient(145deg, #fff4ef, #f7e1df);
-  border: 1px solid #f0dcd7;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-.stat h3 {
-  font-weight: normal;
-  margin: 10px 0;
-}
-
-.stat strong {
-  color: var(--burgundy);
-  font-size: 28px;
-  font-weight: normal;
-}
-
-.stat p { font-size: 13px; color: var(--muted); }
-
-.progress {
-  height: 8px;
-  background: #eadfd7;
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 13px 0 8px;
-}
-
-.progress div {
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--burgundy), var(--rose));
-  transition: width .3s;
-}
-
-.quote {
-  margin-top: 16px;
-  padding: 19px;
-  text-align: center;
-  font-style: italic;
-  color: #69283a;
-  background: linear-gradient(110deg, #f7e5e1, #fff3eb);
-  border-radius: 12px;
-}
-
-.quote small {
-  display: block;
-  margin-top: 8px;
-}
-
-label {
-  display: block;
-  font-size: 14px;
-  color: var(--burgundy);
-  margin: 13px 0 6px;
-}
-
-input, textarea {
-  width: 100%;
-  border: 1px solid #e4d1d1;
-  border-radius: 9px;
-  padding: 12px;
-  background: #fffdfb;
-  color: var(--ink);
-}
-
-textarea { min-height: 90px; resize: vertical; }
-
-.primary {
-  margin-top: 12px;
-  padding: 11px 17px;
-  color: white;
-  background: var(--burgundy);
-  border: 0;
-  border-radius: 9px;
-}
-
-.primary:hover { background: var(--wine); }
-
-.item {
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line);
-  overflow-wrap: anywhere;
-}
-
-.item:last-child { border-bottom: 0; }
-
-.pill {
-  display: inline-block;
-  background: #f5e4e4;
-  color: var(--burgundy);
-  padding: 5px 10px;
-  border-radius: 30px;
-  font-size: 12px;
-}
-
-.bottom-nav { display: none; }
-
-#toast {
-  position: fixed;
-  z-index: 30;
-  bottom: 18px;
-  right: 18px;
-  max-width: calc(100vw - 36px);
-  padding: 13px 17px;
-  background: var(--wine);
-  color: white;
-  border-radius: 10px;
-  display: none;
-}
-
-#toast.show { display: block; }
-
-@media(max-width: 950px) {
-  .app { grid-template-columns: 180px minmax(0, 1fr); }
-  .memory-image { height: 105px; }
-  .lower-grid { grid-template-columns: 1fr; }
-}
-
-@media(max-width: 650px) {
-  .app { display: block; padding-bottom: 75px; }
-  .sidebar { display: none; }
-
-  main { padding: 0 12px 25px; }
-
-  .topbar {
-    margin: 0 -12px 12px;
-    padding: 17px 14px;
-    background: linear-gradient(120deg, #300a13, #501523);
-  }
-
-  .topbar h2 { color: #fff5eb; font-size: 23px; }
-  .topbar p { color: #e7cdd0; font-size: 13px; }
-  .avatar { border-color: white; }
-
-  .hero {
-    min-height: 225px;
-    padding: 23px 19px;
-    border-radius: 13px;
-  }
-
-  .hero h1 { font-size: 34px; }
-  .hero p { font-size: 15px; }
-
-  .quick-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 7px;
-    margin: 12px 0;
-  }
-
-  .quick { padding: 13px 3px; border-radius: 11px; }
-  .quick .icon { font-size: 22px; }
-  .quick strong { font-size: 11px; }
-  .quick .arrow { font-size: 18px; }
-
-  .card { padding: 14px; margin-top: 12px; }
-  .card-heading h2, .section-title { font-size: 21px; }
-
-  .memory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
-  .memory-image { height: 135px; }
-
-  .bottom-nav {
-    position: fixed;
-    z-index: 20;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
-    background: linear-gradient(100deg, #2c0812, #4a1221);
-    border-top: 1px solid var(--gold);
-  }
-
-  .bottom-nav button {
-    display: grid;
-    justify-items: center;
-    gap: 3px;
-    background: transparent;
-    border: 0;
-    color: #f5e1df;
-    font-size: 11px;
-    padding: 4px;
-  }
-
-  .bottom-nav button span { font-size: 22px; }
-  .bottom-nav button.active { color: var(--gold); }
-
-  .stat { padding: 12px; }
-}
-
-@media(max-width: 350px) {
-  .quick strong { font-size: 10px; }
-  .hero h1 { font-size: 29px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#310b14">
+  <meta name="description" content="H&E — Our Little World. Our memories, conversations and shared dreams.">
+  <link rel="manifest" href="./manifest.json">
+  <title>H&E | Our Little World</title>
+
+  <style>
+    :root {
+      --wine: #310b14;
+      --burgundy: #70263b;
+      --rose: #c97887;
+      --gold: #e8c58a;
+      --cream: #fff9f1;
+      --blush: #f8e9e6;
+      --ink: #342029;
+      --muted: #806d70;
+      --line: #eadbd4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible,
+    select:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #300a13, #501523, #26070f);
+      color: white;
+      padding: 24px 14px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      text-align: center;
+      padding: 12px 0 28px;
+      border-bottom: 1px solid #ffffff25;
+    }
+
+    .brand-heart { color: var(--gold); font-size: 38px; }
+
+    .brand h1 {
+      font-weight: normal;
+      letter-spacing: 3px;
+      margin: 5px 0;
+      font-size: 31px;
+    }
+
+    .brand p { font-style: italic; color: #eacdd1; margin: 0; }
+
+    .nav { display: grid; gap: 8px; margin-top: 24px; }
+
+    .nav button {
+      background: transparent;
+      border: 0;
+      color: #f9e9e8;
+      text-align: left;
+      padding: 13px;
+      border-radius: 10px;
+    }
+
+    .nav button.active, .nav button:hover {
+      background: #ffffff19;
+      color: var(--gold);
+    }
+
+    .sidebar-foot {
+      margin-top: auto;
+      text-align: center;
+      color: var(--gold);
+      font-style: italic;
+      padding: 20px 0;
+    }
+
+    main { min-width: 0; padding: 25px clamp(14px, 3vw, 38px); }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .topbar h2 {
+      font-size: clamp(23px, 3vw, 33px);
+      font-weight: normal;
+      color: #401521;
+      margin: 0 0 7px;
+    }
+
+    .topbar p { color: var(--muted); margin: 0; }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--wine);
+      background: linear-gradient(135deg, var(--rose), var(--gold));
+      border: 3px solid white;
+      box-shadow: 0 0 0 1px var(--line);
+      font-size: 25px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .hero {
+      min-height: 245px;
+      padding: 30px;
+      border-radius: 16px;
+      color: white;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(90deg, #260b12e8 0%, #32121a9c 48%, #32121a08 100%),
+        linear-gradient(145deg, #edb38b, #b96c68 42%, #51253a 75%, #211020);
+    }
+
+    .hero:after {
+      content: "♡";
+      position: absolute;
+      right: 9%;
+      bottom: -35px;
+      font-size: 190px;
+      color: #ffffff12;
+      pointer-events: none;
+    }
+
+    .hero-copy { max-width: 370px; position: relative; z-index: 1; }
+
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 4vw, 48px);
+      line-height: 1.12;
+      font-weight: normal;
+      margin: 15px 0;
+    }
+
+    .hero h1 em { font-weight: normal; }
+    .hero p { line-height: 1.5; font-size: 16px; color: #fff0e9; }
+    .hero-heart { color: var(--gold); font-size: 28px; }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .quick {
+      background: linear-gradient(145deg, #fffdfa, #fbf0e9);
+      border: 1px solid var(--line);
+      color: var(--burgundy);
+      border-radius: 13px;
+      padding: 17px 7px;
+      text-align: center;
+      box-shadow: 0 3px 12px #42122108;
+      transition: .2s;
+    }
+
+    .quick:hover { transform: translateY(-3px); box-shadow: 0 8px 20px #42122112; }
+    .quick .icon { font-size: 27px; margin-bottom: 9px; }
+    .quick strong { display: block; font-size: 14px; font-weight: normal; line-height: 1.35; }
+    .quick .arrow { display: block; font-size: 22px; margin-top: 6px; }
+
+    .card {
+      margin-top: 16px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: #fffdf9;
+      border-radius: 15px;
+      box-shadow: 0 7px 23px #4114220b;
+      min-width: 0;
+    }
+
+    .card-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-heading h2, .section-title {
+      font-weight: normal;
+      font-size: 24px;
+      color: #4b1825;
+      margin: 0;
+    }
+
+    .link-button { border: 0; background: transparent; color: var(--burgundy); padding: 5px; }
+    .muted { color: var(--muted); }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .memory { min-width: 0; }
+
+    .memory-image {
+      height: 130px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #f1c5a2, #b76b64 45%, #452032);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 34px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+
+    .memory h3 {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 9px 0 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .memory p {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 5px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .lower-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .stat {
+      background: linear-gradient(145deg, #fff4ef, #f7e1df);
+      border: 1px solid #f0dcd7;
+      padding: 15px;
+      border-radius: 12px;
+      min-width: 0;
+    }
+
+    .stat h3 { font-weight: normal; margin: 10px 0; }
+    .stat strong { color: var(--burgundy); font-size: 28px; font-weight: normal; overflow-wrap: anywhere; }
+    .stat p { font-size: 13px; color: var(--muted); }
+
+    .progress {
+      height: 8px;
+      background: #eadfd7;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 13px 0 8px;
+    }
+
+    .progress div {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--burgundy), var(--rose));
+      transition: width .3s;
+    }
+
+    .quote {
+      margin-top: 16px;
+      padding: 19px;
+      text-align: center;
+      font-style: italic;
+      color: #69283a;
+      background: linear-gradient(110deg, #f7e5e1, #fff3eb);
+      border-radius: 12px;
+    }
+
+    .quote small { display: block; margin-top: 8px; }
+
+    label { display: block; font-size: 14px; color: var(--burgundy); margin: 13px 0 6px; }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #e4d1d1;
+      border-radius: 9px;
+      padding: 12px;
+      background: #fffdfb;
+      color: var(--ink);
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .primary {
+      margin-top: 12px;
+      padding: 11px 17px;
+      color: white;
+      background: var(--burgundy);
+      border: 0;
+      border-radius: 9px;
+    }
+
+    .primary:hover { background: var(--wine); }
+
+    .secondary {
+      margin-top: 8px;
+      padding: 9px 13px;
+      color: var(--burgundy);
+      background: #f8e9e6;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+    }
+
+    .item { padding: 13px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+    .item:last-child { border-bottom: 0; }
+
+    .pill {
+      display: inline-block;
+      background: #f5e4e4;
+      color: var(--burgundy);
+      padding: 5px 10px;
+      border-radius: 30px;
+      font-size: 12px;
+    }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
+
+    .tabs button {
+      border: 1px solid var(--line);
+      color: var(--burgundy);
+      background: #fff9f1;
+      border-radius: 30px;
+      padding: 9px 15px;
+    }
+
+    .tabs button.active { background: var(--burgundy); color: white; }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .media-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff9f1;
+    }
+
+    .media-preview {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      background: var(--blush);
+      cursor: pointer;
+    }
+
+    .media-info { padding: 9px; }
+    .media-info p { margin: 4px 0; font-size: 13px; overflow-wrap: anywhere; }
+
+    .calendar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 15px 0;
+    }
+
+    .calendar-head h3 { margin: 0; font-weight: normal; text-align: center; }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .calendar-day-name {
+      text-align: center;
+      color: var(--muted);
+      padding: 8px 0;
+      font-size: 12px;
+    }
+
+    .calendar-day {
+      min-height: 62px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 6px 3px;
+      text-align: center;
+      position: relative;
+    }
+
+    .calendar-day.outside { opacity: .4; }
+    .calendar-day.today { border: 2px solid var(--rose); }
+    .calendar-day.selected { background: #f4dfe1; border-color: var(--burgundy); }
+    .calendar-day.has-event:after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--burgundy);
+      position: absolute;
+      bottom: 5px;
+      left: calc(50% - 3px);
+    }
+
+    .calendar-day .day-number { font-size: 13px; }
+    .calendar-day .event-count { font-size: 10px; color: var(--burgundy); display: block; margin-top: 4px; }
+
+    .bottom-nav { display: none; }
+
+    #toast {
+      position: fixed;
+      z-index: 100;
+      bottom: 18px;
+      right: 18px;
+      max-width: calc(100vw - 36px);
+      padding: 13px 17px;
+      background: var(--wine);
+      color: white;
+      border-radius: 10px;
+      display: none;
+    }
+
+    #toast.show { display: block; }
+
+    .modal {
+      position: fixed;
+      z-index: 90;
+      inset: 0;
+      background: #16060df2;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-content {
+      max-width: 95vw;
+      max-height: 90vh;
+      text-align: center;
+      color: white;
+    }
+
+    .modal-content img, .modal-content video {
+      max-width: 95vw;
+      max-height: 75vh;
+      object-fit: contain;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 18px;
+      background: transparent;
+      color: white;
+      border: 1px solid #ffffff66;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 25px;
+    }
+
+    @media(max-width: 950px) {
+      .app { grid-template-columns: 180px minmax(0, 1fr); }
+      .memory-image { height: 105px; }
+      .lower-grid { grid-template-columns: 1fr; }
+      .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media(max-width: 650px) {
+      .app { display: block; padding-bottom: 78px; }
+      .sidebar { display: none; }
+      main { padding: 0 12px 25px; }
+
+      .topbar {
+        margin: 0 -12px 12px;
+        padding: 17px 14px;
+        background: linear-gradient(120deg, #300a13, #501523);
+      }
+
+      .topbar h2 { color: #fff5eb; font-size: 23px; }
+      .topbar p { color: #e7cdd0; font-size: 13px; }
+
+      .hero { min-height: 225px; padding: 23px 19px; border-radius: 13px; }
+      .hero h1 { font-size: 34px; }
+      .hero p { font-size: 15px; }
+
+      .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin: 12px 0; }
+      .quick { padding: 13px 3px; border-radius: 11px; }
+      .quick .icon { font-size: 22px; }
+      .quick strong { font-size: 12px; }
+      .quick .arrow { font-size: 18px; }
+
+      .card { padding: 14px; margin-top: 12px; }
+      .card-heading h2, .section-title { font-size: 21px; }
+      .memory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+      .memory-image { height: 135px; }
+
+      .bottom-nav {
+        position: fixed;
+        z-index: 20;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+        background: linear-gradient(100deg, #2c0812, #4a1221);
+        border-top: 1px solid var(--gold);
+      }
+
+      .bottom-nav button {
+        display: grid;
+        justify-items: center;
+        gap: 3px;
+        background: transparent;
+        border: 0;
+        color: #f5e1df;
+        font-size: 11px;
+        padding: 4px;
+      }
+
+      .bottom-nav button span { font-size: 22px; }
+      .bottom-nav button.active { color: var(--gold); }
+      .stat { padding: 12px; }
+      .calendar-day { min-height: 48px; }
+      .calendar-day .event-count { font-size: 9px; }
+      .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .media-preview { height: 120px; }
+    }
+
+    @media(max-width: 350px) {
+      .hero h1 { font-size: 29px; }
+      .calendar-grid { gap: 2px; }
+      .calendar-day { min-height: 42px; padding: 4px 1px; }
+    }
+  </style>
 </head>
-
-
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .catch(error => console.error("Service worker error:", error));
-  });
-}
-</script>
 
 <body>
 <div class="app">
@@ -540,12 +579,13 @@ if ("serviceWorker" in navigator) {
       <p>Our Little World</p>
     </div>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
       <button class="active" data-page="home">⌂ &nbsp; Home</button>
-      <button data-page="memories">▧ &nbsp; Our Memories</button>
-      <button data-page="profiles">♙ &nbsp; Our Profiles</button>
-      <button data-page="chats">♡ &nbsp; Our Conversations</button>
-      <button data-page="savings">♧ &nbsp; Our Savings</button>
+      <button data-page="memories">▧ &nbsp; Memories</button>
+      <button data-page="chats">♡ &nbsp; Chats</button>
+      <button data-page="calendar">▦ &nbsp; Calendar</button>
+      <button data-page="savings">♧ &nbsp; Savings</button>
+      <button data-page="profiles">♙ &nbsp; Profiles</button>
     </nav>
 
     <div class="sidebar-foot">♡<br>Better Together</div>
@@ -554,15 +594,14 @@ if ("serviceWorker" in navigator) {
   <main>
     <div class="topbar">
       <div>
-        <h2 id="greeting">Good evening, H&amp;E</h2>
+        <h2>H&amp;E — Our Little World</h2>
         <p>Two hearts. One journey. Our little world. ♡</p>
       </div>
-      <div class="avatar">♡</div>
+      <div class="avatar" aria-label="H&E">♡</div>
     </div>
 
     <!-- HOME -->
     <section class="page active" id="page-home">
-
       <div class="hero">
         <div class="hero-copy">
           <div class="eyebrow">Our story, beautifully kept</div>
@@ -574,27 +613,16 @@ if ("serviceWorker" in navigator) {
 
       <div class="quick-grid">
         <button class="quick" data-go="memories">
-          <div class="icon">▧</div>
-          <strong>Our<br>Memories</strong>
-          <span class="arrow">→</span>
+          <div class="icon">▧</div><strong>Our Memories</strong><span class="arrow">→</span>
         </button>
-
         <button class="quick" data-go="chats">
-          <div class="icon">♡</div>
-          <strong>Our<br>Conversations</strong>
-          <span class="arrow">→</span>
+          <div class="icon">♡</div><strong>Our Chats</strong><span class="arrow">→</span>
         </button>
-
+        <button class="quick" data-go="calendar">
+          <div class="icon">▦</div><strong>Our Calendar</strong><span class="arrow">→</span>
+        </button>
         <button class="quick" data-go="savings">
-          <div class="icon">♧</div>
-          <strong>Our<br>Savings</strong>
-          <span class="arrow">→</span>
-        </button>
-
-        <button class="quick" data-go="profiles">
-          <div class="icon">♙</div>
-          <strong>Our<br>Profiles</strong>
-          <span class="arrow">→</span>
+          <div class="icon">♧</div><strong>Our Savings</strong><span class="arrow">→</span>
         </button>
       </div>
 
@@ -620,7 +648,7 @@ if ("serviceWorker" in navigator) {
             <div class="stat">
               <div class="icon">▷</div>
               <h3>Our Videos</h3>
-              <strong>0</strong>
+              <strong id="videoCount">0</strong>
               <p>Memories in motion</p>
             </div>
           </div>
@@ -641,10 +669,15 @@ if ("serviceWorker" in navigator) {
         </div>
       </div>
 
-      <div class="quote">
-        Better together, always.
-        <small>— H&amp;E ♡</small>
+      <div class="card">
+        <div class="card-heading">
+          <h2>Coming Up</h2>
+          <button class="link-button" data-go="calendar">Open Calendar →</button>
+        </div>
+        <div id="homeEvents"></div>
       </div>
+
+      <div class="quote">Better together, always.<small>— H&amp;E ♡</small></div>
     </section>
 
     <!-- MEMORIES -->
@@ -652,6 +685,12 @@ if ("serviceWorker" in navigator) {
       <div class="card">
         <h2 class="section-title">Our Memories</h2>
         <p class="muted">Keep the little moments that mean everything.</p>
+
+        <div class="tabs">
+          <button class="active" data-memory-tab="all">All Memories</button>
+          <button data-memory-tab="photos">Photos</button>
+          <button data-memory-tab="videos">Videos</button>
+        </div>
 
         <form id="memoryForm">
           <label for="memoryTitle">Memory title</label>
@@ -663,8 +702,9 @@ if ("serviceWorker" in navigator) {
           <label for="memoryNote">A little note</label>
           <textarea id="memoryNote" maxlength="500" placeholder="Why this moment matters..."></textarea>
 
-          <label for="memoryPhoto">Choose a photo</label>
-          <input id="memoryPhoto" type="file" accept="image/*">
+          <label for="memoryFiles">Choose photos or videos</label>
+          <input id="memoryFiles" type="file" accept="image/*,video/*" multiple>
+          <small class="muted">For this device-only version, choose small files. Videos may use significant storage.</small>
 
           <button class="primary" type="submit">Save Memory ♡</button>
         </form>
@@ -672,42 +712,19 @@ if ("serviceWorker" in navigator) {
 
       <div class="card">
         <div class="card-heading">
-          <h2>Our Collection</h2>
+          <h2 id="collectionTitle">Our Collection</h2>
           <span id="memoryTotal" class="muted">0 memories</span>
         </div>
-        <div class="memory-grid" id="allMemories"></div>
+        <div class="media-grid" id="mediaCollection"></div>
       </div>
     </section>
 
-    <!-- PROFILES -->
-    <section class="page" id="page-profiles">
-      <div class="card">
-        <h2 class="section-title">Our Profiles</h2>
-        <p class="muted">A little space for each of you.</p>
-
-        <form id="profileForm">
-          <label for="yourName">Your name</label>
-          <input id="yourName" maxlength="60" placeholder="Your name">
-
-          <label for="partnerName">Partner's name</label>
-          <input id="partnerName" maxlength="60" placeholder="Partner's name">
-
-          <label for="aboutUs">About our little world</label>
-          <textarea id="aboutUs" maxlength="1000" placeholder="A few words about your journey together..."></textarea>
-
-          <button class="primary" type="submit">Save Profiles</button>
-        </form>
-
-        <div class="quote">Two hearts. One story. A thousand little moments.<small>— H&amp;E</small></div>
-      </div>
-    </section>
-
-    <!-- CONVERSATIONS -->
+    <!-- CHATS -->
     <section class="page" id="page-chats">
       <div class="card">
-        <h2 class="section-title">Our Conversations</h2>
-        <p class="muted">Write down a message you want to keep.</p>
-
+        <h2 class="section-title">Our Chats</h2>
+        <p class="muted">Keep meaningful messages from your journey together.</p>
+        <p class="pill">Device-only messages</p>
         <div id="chatList"></div>
 
         <form id="chatForm">
@@ -722,11 +739,60 @@ if ("serviceWorker" in navigator) {
       </div>
     </section>
 
+    <!-- CALENDAR -->
+    <section class="page" id="page-calendar">
+      <div class="card">
+        <h2 class="section-title">Our Calendar</h2>
+        <p class="muted">Dates to remember, moments to look forward to.</p>
+
+        <div class="calendar-head">
+          <button class="secondary" id="previousMonth" type="button" aria-label="Previous month">←</button>
+          <h3 id="calendarMonth">Month Year</h3>
+          <button class="secondary" id="nextMonth" type="button" aria-label="Next month">→</button>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <div class="card" style="box-shadow:none">
+          <div class="card-heading">
+            <h2 id="selectedDateTitle">Selected date</h2>
+            <button class="link-button" id="todayButton" type="button">Today</button>
+          </div>
+          <div id="selectedDayEvents"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Add an Event</h2>
+        <form id="eventForm">
+          <label for="eventTitle">Event title</label>
+          <input id="eventTitle" maxlength="100" required placeholder="Our anniversary">
+
+          <label for="eventDate">Date</label>
+          <input id="eventDate" type="date" required>
+
+          <label for="eventTime">Time (optional)</label>
+          <input id="eventTime" type="time">
+
+          <label for="eventNote">Notes (optional)</label>
+          <textarea id="eventNote" maxlength="500" placeholder="Plans, reminders or details..."></textarea>
+
+          <button class="primary" type="submit">Save Event ♡</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">All Upcoming Events</h2>
+        <div id="allEvents"></div>
+      </div>
+    </section>
+
     <!-- SAVINGS -->
     <section class="page" id="page-savings">
       <div class="card">
         <h2 class="section-title">Our Savings</h2>
         <p class="muted">Small steps, shared dreams.</p>
+        <p class="pill">Records only — no real money moves through this page</p>
 
         <form id="goalForm">
           <label for="goalName">What are we saving for?</label>
@@ -768,270 +834,560 @@ if ("serviceWorker" in navigator) {
         </div>
       </div>
     </section>
+
+    <!-- PROFILES -->
+    <section class="page" id="page-profiles">
+      <div class="card">
+        <h2 class="section-title">Our Profiles</h2>
+        <p class="muted">A little space for each of you.</p>
+
+        <form id="profileForm">
+          <label for="yourName">Your name</label>
+          <input id="yourName" maxlength="60" placeholder="Your name">
+
+          <label for="partnerName">Partner's name</label>
+          <input id="partnerName" maxlength="60" placeholder="Partner's name">
+
+          <label for="aboutUs">About our little world</label>
+          <textarea id="aboutUs" maxlength="1000" placeholder="A few words about your journey together..."></textarea>
+
+          <button class="primary" type="submit">Save Profiles</button>
+        </form>
+
+        <div class="quote">Two hearts. One story. A thousand little moments.<small>— H&amp;E</small></div>
+      </div>
+    </section>
   </main>
 </div>
 
-<!-- Four-item mobile navigation: no Special Dates -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" aria-label="Mobile navigation">
   <button class="active" data-page="home"><span>⌂</span>Home</button>
   <button data-page="memories"><span>▧</span>Memories</button>
-  <button data-page="profiles"><span>♙</span>Profiles</button>
   <button data-page="chats"><span>♡</span>Chats</button>
+  <button data-page="calendar"><span>▦</span>Calendar</button>
 </nav>
 
 <div id="toast" role="status" aria-live="polite"></div>
 
+<div class="modal" id="mediaModal" role="dialog" aria-modal="true" aria-label="View memory">
+  <button class="modal-close" id="closeModal" aria-label="Close viewer">×</button>
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<!-- Firebase initialization -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBSNBNG-Tw8tRtVBmjujYHLOYXlFA46j7s",
+    authDomain: "he-our-little-world.firebaseapp.com",
+    projectId: "he-our-little-world",
+    storageBucket: "he-our-little-world.firebasestorage.app",
+    messagingSenderId: "989601413803",
+    appId: "1:989601413803:web:897e1a65f90d93999015ee"
+  };
+
+  try {
+    const firebaseApp = initializeApp(firebaseConfig);
+    window.heFirebaseAuth = getAuth(firebaseApp);
+    window.heFirebaseDB = getFirestore(firebaseApp);
+    console.info("H&E Firebase initialized.");
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+  }
+</script>
+
 <script>
+"use strict";
+
 const $ = id => document.getElementById(id);
 const STORAGE_KEY = "he-little-world-v1";
+const MEDIA_KEY = "he-little-world-media-v1";
+const EVENT_KEY = "he-little-world-events-v1";
 
 const starterMemories = [
-  {title:"Our First Trip",date:"A day to remember",note:"A beautiful beginning.",symbol:"☼"},
-  {title:"Together Always",date:"Little things, big meaning",note:"The comfort of being together.",symbol:"♡"},
-  {title:"Little Moments",date:"A memory to keep",note:"Ordinary days become extraordinary.",symbol:"✧"},
-  {title:"Better Together",date:"Another chapter",note:"Growing side by side.",symbol:"⌁"}
+  { id:"starter-1", title:"Our First Trip", date:"", note:"A beautiful beginning.", symbol:"☼", starter:true },
+  { id:"starter-2", title:"Together Always", date:"", note:"The comfort of being together.", symbol:"♡", starter:true },
+  { id:"starter-3", title:"Little Moments", date:"", note:"Ordinary days become extraordinary.", symbol:"✧", starter:true },
+  { id:"starter-4", title:"Better Together", date:"", note:"Growing side by side.", symbol:"⌁", starter:true }
 ];
 
 let state = {
-  memories: starterMemories,
+  memories: starterMemories.map(m => ({...m})),
   chats: [],
-  profile: {you:"",partner:"",about:""},
-  goal: {name:"Our shared dream",target:0,saved:0},
+  profile: {you:"", partner:"", about:""},
+  goal: {name:"Our shared dream", target:0, saved:0},
   contributions: []
 };
 
-function escapeHTML(value="") {
+let mediaItems = [];
+let events = [];
+let selectedMemoryTab = "all";
+
+const today = new Date();
+let calendarYear = today.getFullYear();
+let calendarMonth = today.getMonth();
+let selectedDate = localDateString(today);
+
+function localDateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function escapeHTML(value = "") {
   return String(value).replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
   })[c]);
 }
 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const saved = JSON.parse(raw);
-    state = {
-      ...state,
-      ...saved,
-      profile:{...state.profile,...saved.profile},
-      goal:{...state.goal,...saved.goal}
-    };
-  } catch(error) {
-    console.warn("Saved data could not be loaded.",error);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      state = {
+        ...state,
+        ...saved,
+        profile: {...state.profile, ...(saved.profile || {})},
+        goal: {...state.goal, ...(saved.goal || {})},
+        memories: Array.isArray(saved.memories) ? saved.memories : state.memories,
+        chats: Array.isArray(saved.chats) ? saved.chats : [],
+        contributions: Array.isArray(saved.contributions) ? saved.contributions : []
+      };
+    }
+  } catch (error) {
+    console.warn("Saved app data could not be loaded.", error);
+  }
+
+  try {
+    const rawMedia = localStorage.getItem(MEDIA_KEY);
+    if (rawMedia) mediaItems = JSON.parse(rawMedia);
+    if (!Array.isArray(mediaItems)) mediaItems = [];
+  } catch (error) {
+    mediaItems = [];
+    console.warn("Saved media could not be loaded.", error);
+  }
+
+  try {
+    const rawEvents = localStorage.getItem(EVENT_KEY);
+    if (rawEvents) events = JSON.parse(rawEvents);
+    if (!Array.isArray(events)) events = [];
+  } catch (error) {
+    events = [];
+    console.warn("Saved events could not be loaded.", error);
   }
 }
 
 function saveState() {
   try {
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
-  } catch(error) {
-    toast("Storage is full. Try a smaller photo.",true);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
+  } catch (error) {
+    toast("Device storage is full. Remove some large files.", true);
+    return false;
   }
 }
 
-function toast(message,error=false) {
+function saveMedia() {
+  try {
+    localStorage.setItem(MEDIA_KEY, JSON.stringify(mediaItems));
+    return true;
+  } catch (error) {
+    toast("Media storage is full. Try smaller files or fewer videos.", true);
+    return false;
+  }
+}
+
+function saveEvents() {
+  try {
+    localStorage.setItem(EVENT_KEY, JSON.stringify(events));
+    return true;
+  } catch (error) {
+    toast("Could not save the event on this device.", true);
+    return false;
+  }
+}
+
+function toast(message, error = false) {
   const box = $("toast");
   box.textContent = message;
   box.style.background = error ? "#8c2438" : "#310b14";
   box.classList.add("show");
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(()=>box.classList.remove("show"),2600);
+  toast.timer = setTimeout(() => box.classList.remove("show"), 3000);
 }
 
 function showPage(page) {
   document.querySelectorAll(".page").forEach(section => {
-    section.classList.toggle("active",section.id === "page-"+page);
+    section.classList.toggle("active", section.id === "page-" + page);
   });
+
   document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle("active",button.dataset.page === page);
+    button.classList.toggle("active", button.dataset.page === page);
   });
-  window.scrollTo({top:0,behavior:"smooth"});
+
+  window.scrollTo({top:0, behavior:"smooth"});
+
+  if (page === "calendar") renderCalendar();
+  if (page === "memories") renderMedia();
 }
 
 document.querySelectorAll("[data-page]").forEach(button => {
-  button.addEventListener("click",()=>showPage(button.dataset.page));
+  button.addEventListener("click", () => showPage(button.dataset.page));
 });
 
 document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click",()=>showPage(button.dataset.go));
+  button.addEventListener("click", () => showPage(button.dataset.go));
 });
 
-function renderMemories() {
-  const html = state.memories.map((memory,index)=>`
-    <article class="memory">
-      <div class="memory-image" ${memory.image
-        ? `style="background-image:linear-gradient(#0001,#0001),url('${memory.image}')"`
-        : ""}>${memory.image ? "" : escapeHTML(memory.symbol || "♡")}</div>
-      <h3>${escapeHTML(memory.title)}</h3>
-      <p>${escapeHTML(memory.date || "A moment to keep")}</p>
-      ${memory.note ? `<p>${escapeHTML(memory.note)}</p>` : ""}
-      ${index >= starterMemories.length
-        ? `<button class="link-button" data-remove="${index}">Remove</button>` : ""}
+/* Memories and media */
+
+function renderHomeMemories() {
+  const customMemories = state.memories.filter(memory => !memory.starter);
+  const preview = customMemories.slice(0, 4);
+
+  $("homeMemories").innerHTML = preview.length
+    ? preview.map(memory => `
+      <article class="memory">
+        <div class="memory-image" data-open-memory="${escapeHTML(memory.id)}">
+          ${escapeHTML(memory.symbol || "♡")}
+        </div>
+        <h3>${escapeHTML(memory.title)}</h3>
+        <p>${escapeHTML(memory.date || "A moment to keep")}</p>
+      </article>
+    `).join("")
+    : `<p class="muted">Your story begins with a memory you choose to save.</p>`;
+
+  $("photoCount").textContent = mediaItems.filter(item => item.type === "image").length;
+  $("videoCount").textContent = mediaItems.filter(item => item.type === "video").length;
+}
+
+function renderMedia() {
+  const customMemories = state.memories.filter(memory => !memory.starter);
+
+  $("memoryTotal").textContent =
+    customMemories.length + " memories · " + mediaItems.length + " files";
+
+  $("collectionTitle").textContent = selectedMemoryTab === "photos"
+    ? "Our Photos"
+    : selectedMemoryTab === "videos"
+      ? "Our Videos"
+      : "Our Collection";
+
+  const filteredMedia = mediaItems.filter(item => {
+    if (selectedMemoryTab === "photos") return item.type === "image";
+    if (selectedMemoryTab === "videos") return item.type === "video";
+    return true;
+  });
+
+  const mediaHTML = filteredMedia.map(item => `
+    <article class="media-card">
+      ${item.type === "image"
+        ? `<img class="media-preview" src="${item.data}" alt="${escapeHTML(item.title)}" data-view-media="${escapeHTML(item.id)}">`
+        : `<video class="media-preview" src="${item.data}" controls preload="metadata"></video>`}
+      <div class="media-info">
+        <p><strong>${escapeHTML(item.title)}</strong></p>
+        <p class="muted">${escapeHTML(item.date || "")}</p>
+        ${item.note ? `<p>${escapeHTML(item.note)}</p>` : ""}
+        <button class="link-button" type="button" data-view-media="${escapeHTML(item.id)}">View</button>
+        <button class="link-button" type="button" data-delete-media="${escapeHTML(item.id)}">Remove</button>
+      </div>
     </article>
   `).join("");
 
-  $("homeMemories").innerHTML = html || "<p>No memories yet.</p>";
-  $("allMemories").innerHTML = html || "<p>No memories yet.</p>";
-  $("memoryTotal").textContent = state.memories.length+" memories";
-  $("photoCount").textContent = state.memories.filter(m=>m.image).length;
+  const memoryHTML = customMemories.map(memory => `
+    <article class="media-card">
+      <div class="media-info">
+        <span class="pill">Memory</span>
+        <p><strong>${escapeHTML(memory.title)}</strong></p>
+        <p class="muted">${escapeHTML(memory.date || "")}</p>
+        ${memory.note ? `<p>${escapeHTML(memory.note)}</p>` : ""}
+        <button class="link-button" type="button" data-delete-memory="${escapeHTML(memory.id)}">Remove memory</button>
+      </div>
+    </article>
+  `).join("");
 
-  document.querySelectorAll("[data-remove]").forEach(button=>{
-    button.addEventListener("click",()=>{
-      state.memories.splice(Number(button.dataset.remove),1);
-      saveState();
-      renderMemories();
-      toast("Memory removed.");
-    });
+  $("mediaCollection").innerHTML = (mediaHTML + memoryHTML) ||
+    '<p class="muted">Nothing here yet. Add your first memory above. ♡</p>';
+
+  document.querySelectorAll("[data-memory-tab]").forEach(button => {
+    button.classList.toggle("active", button.dataset.memoryTab === selectedMemoryTab);
   });
+
+  renderHomeMemories();
 }
 
-$("memoryForm").addEventListener("submit",async event=>{
+document.querySelectorAll("[data-memory-tab]").forEach(button => {
+  button.addEventListener("click", () => {
+    selectedMemoryTab = button.dataset.memoryTab;
+    renderMedia();
+  });
+});
+
+$("memoryForm").addEventListener("submit", async event => {
   event.preventDefault();
 
   const title = $("memoryTitle").value.trim();
-  const file = $("memoryPhoto").files[0];
-  let image = "";
+  const files = Array.from($("memoryFiles").files || []);
+  const date = $("memoryDate").value || localDateString(new Date());
+  const note = $("memoryNote").value.trim();
 
   if (!title) return;
 
-  if (file) {
-    if (!file.type.startsWith("image/")) {
-      toast("Please choose an image file.",true);
-      return;
-    }
-    if (file.size > 800000) {
-      toast("Choose an image under 800 KB for this demo.",true);
-      return;
-    }
-
-    image = await new Promise((resolve,reject)=>{
-      const reader = new FileReader();
-      reader.onload = ()=>resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+  if (files.length > 5) {
+    toast("Choose up to 5 files at a time.", true);
+    return;
   }
 
-  state.memories.unshift({
-    title,
-    date:$("memoryDate").value || new Date().toLocaleDateString(),
-    note:$("memoryNote").value.trim(),
-    image,
-    symbol:"♡"
-  });
+  for (const file of files) {
+    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+      toast("Choose image or video files only.", true);
+      return;
+    }
 
-  saveState();
-  renderMemories();
-  event.target.reset();
-  toast("Memory saved on this device.");
+    if (file.size > 1_000_000) {
+      toast("For this device-only version, each file must be 1 MB or smaller.", true);
+      return;
+    }
+  }
+
+  try {
+    const newMemory = {
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      title,
+      date,
+      note,
+      symbol: "♡",
+      starter: false
+    };
+
+    state.memories.unshift(newMemory);
+
+    const newMedia = await Promise.all(files.map(file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(),
+        title,
+        date,
+        note,
+        type: file.type.startsWith("video/") ? "video" : "image",
+        data: reader.result
+      });
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    })));
+
+    mediaItems.push(...newMedia);
+
+    const stateSaved = saveState();
+    const mediaSaved = saveMedia();
+
+    if (!stateSaved || !mediaSaved) {
+      toast("Storage may be full. Check your saved items.", true);
+    } else {
+      toast("Memory saved on this device. ♡");
+    }
+
+    event.target.reset();
+    renderMedia();
+  } catch (error) {
+    console.error(error);
+    toast("Unable to save this memory. Try smaller files.", true);
+  }
 });
 
-$("profileForm").addEventListener("submit",event=>{
+function openMediaViewer(item) {
+  if (!item) return;
+
+  const content = $("modalContent");
+  if (item.type === "video") {
+    content.innerHTML = `<video src="${item.data}" controls autoplay playsinline></video><p>${escapeHTML(item.title)}</p>`;
+  } else {
+    content.innerHTML = `<img src="${item.data}" alt="${escapeHTML(item.title)}"><p>${escapeHTML(item.title)}</p>`;
+  }
+
+  $("mediaModal").classList.add("open");
+}
+
+$("closeModal").addEventListener("click", closeMediaViewer);
+$("mediaModal").addEventListener("click", event => {
+  if (event.target === $("mediaModal")) closeMediaViewer();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeMediaViewer();
+});
+
+function closeMediaViewer() {
+  $("mediaModal").classList.remove("open");
+  $("modalContent").innerHTML = "";
+}
+
+document.addEventListener("click", event => {
+  const viewButton = event.target.closest("[data-view-media]");
+  if (viewButton) {
+    const item = mediaItems.find(media => media.id === viewButton.dataset.viewMedia);
+    if (item) openMediaViewer(item);
+  }
+
+  const deleteMediaButton = event.target.closest("[data-delete-media]");
+  if (deleteMediaButton) {
+    const id = deleteMediaButton.dataset.deleteMedia;
+    if (!confirm("Remove this saved file from this device?")) return;
+    mediaItems = mediaItems.filter(item => item.id !== id);
+    if (saveMedia()) {
+      renderMedia();
+      toast("File removed.");
+    }
+  }
+
+  const deleteMemoryButton = event.target.closest("[data-delete-memory]");
+  if (deleteMemoryButton) {
+    const id = deleteMemoryButton.dataset.deleteMemory;
+    if (!confirm("Remove this memory?")) return;
+    state.memories = state.memories.filter(memory => memory.id !== id);
+    saveState();
+    renderMedia();
+    toast("Memory removed.");
+  }
+
+  const openMemoryButton = event.target.closest("[data-open-memory]");
+  if (openMemoryButton) {
+    const memory = state.memories.find(item => item.id === openMemoryButton.dataset.openMemory);
+    if (memory) {
+      $("modalContent").innerHTML =
+        `<h2>${escapeHTML(memory.title)}</h2><p>${escapeHTML(memory.date || "")}</p><p>${escapeHTML(memory.note || "")}</p>`;
+      $("mediaModal").classList.add("open");
+    }
+  }
+});
+
+/* Profiles */
+
+$("profileForm").addEventListener("submit", event => {
   event.preventDefault();
 
   state.profile = {
-    you:$("yourName").value.trim(),
-    partner:$("partnerName").value.trim(),
-    about:$("aboutUs").value.trim()
+    you: $("yourName").value.trim(),
+    partner: $("partnerName").value.trim(),
+    about: $("aboutUs").value.trim()
   };
 
-  saveState();
-  updateGreeting();
-  toast("Profiles saved.");
+  if (saveState()) toast("Profiles saved on this device.");
 });
 
-function updateGreeting() {
-  const a = state.profile.you;
-  const b = state.profile.partner;
-  const names = a && b ? `${a} & ${b}` : a || b || "H&E";
-
-  $("greeting").textContent = "Good evening, "+names;
-  $("yourName").value = a || "";
-  $("partnerName").value = b || "";
+function renderProfile() {
+  $("yourName").value = state.profile.you || "";
+  $("partnerName").value = state.profile.partner || "";
   $("aboutUs").value = state.profile.about || "";
 }
 
-$("chatForm").addEventListener("submit",event=>{
+/* Chats */
+
+$("chatForm").addEventListener("submit", event => {
   event.preventDefault();
 
   const message = $("chatMessage").value.trim();
   if (!message) return;
 
   state.chats.push({
-    name:$("chatName").value.trim() || "H&E",
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    name: $("chatName").value.trim() || state.profile.you || "H&E",
     message,
-    date:new Date().toLocaleString()
+    date: new Date().toLocaleString()
   });
 
-  saveState();
-  $("chatMessage").value = "";
-  renderChats();
-  toast("Message saved on this device.");
+  if (saveState()) {
+    $("chatMessage").value = "";
+    renderChats();
+    toast("Message saved on this device.");
+  }
 });
 
 function renderChats() {
   $("chatList").innerHTML = state.chats.length
-    ? [...state.chats].reverse().map(chat=>`
+    ? [...state.chats].reverse().map(chat => `
       <div class="item">
         <span class="pill">${escapeHTML(chat.name)}</span>
-        <p>${escapeHTML(chat.message).replace(/\n/g,"<br>")}</p>
+        <p>${escapeHTML(chat.message).replace(/\n/g, "<br>")}</p>
         <small class="muted">${escapeHTML(chat.date)}</small>
+        <button class="link-button" type="button" data-delete-chat="${escapeHTML(chat.id || "")}">Remove</button>
       </div>
     `).join("")
     : '<p class="muted">Your story is made of little conversations.</p>';
 }
 
-$("goalForm").addEventListener("submit",event=>{
+$("chatList").addEventListener("click", event => {
+  const button = event.target.closest("[data-delete-chat]");
+  if (!button) return;
+  if (!confirm("Remove this saved message?")) return;
+
+  state.chats = state.chats.filter(chat => chat.id !== button.dataset.deleteChat);
+  saveState();
+  renderChats();
+  toast("Message removed.");
+});
+
+/* Savings */
+
+$("goalForm").addEventListener("submit", event => {
   event.preventDefault();
 
   const name = $("goalName").value.trim();
   const target = Number($("goalTarget").value);
   const saved = Number($("goalStarting").value);
 
-  if (!name || target <= 0 || saved < 0) {
-    toast("Enter a goal and valid amounts.",true);
+  if (!name || !Number.isFinite(target) || target <= 0 ||
+      !Number.isFinite(saved) || saved < 0) {
+    toast("Enter a goal and valid amounts.", true);
     return;
   }
 
-  state.goal = {name,target,saved};
-  saveState();
-  renderGoal();
-  toast("Savings goal saved.");
+  state.goal = {name, target, saved};
+  if (saveState()) {
+    renderGoal();
+    toast("Savings goal saved.");
+  }
 });
 
-$("contributionForm").addEventListener("submit",event=>{
+$("contributionForm").addEventListener("submit", event => {
   event.preventDefault();
 
   const amount = Number($("contribution").value);
   if (!Number.isFinite(amount) || amount <= 0) {
-    toast("Enter an amount greater than zero.",true);
+    toast("Enter an amount greater than zero.", true);
     return;
   }
 
   state.goal.saved += amount;
   state.contributions.push({
     amount,
-    note:$("contributionNote").value.trim(),
-    date:new Date().toLocaleDateString()
+    note: $("contributionNote").value.trim(),
+    date: new Date().toLocaleDateString()
   });
 
-  saveState();
-  event.target.reset();
-  renderGoal();
-  toast("Contribution added.");
+  if (saveState()) {
+    event.target.reset();
+    renderGoal();
+    toast("Contribution recorded on this device.");
+  }
 });
 
 function money(amount) {
-  return "KES "+Number(amount || 0).toLocaleString("en-KE",{
-    maximumFractionDigits:2
+  return "KES " + Number(amount || 0).toLocaleString("en-KE", {
+    maximumFractionDigits: 2
   });
 }
 
 function renderGoal() {
   const goal = state.goal;
   const percent = goal.target > 0
-    ? Math.min(100,Math.round(goal.saved/goal.target*100)) : 0;
+    ? Math.min(100, Math.round(goal.saved / goal.target * 100))
+    : 0;
 
   $("goalName").value = goal.name || "";
   $("goalTarget").value = goal.target || "";
@@ -1039,19 +1395,19 @@ function renderGoal() {
 
   $("goalDisplayName").textContent = goal.name || "Our shared dream";
   $("savedDisplay").textContent = money(goal.saved);
-  $("targetDisplay").textContent = "Target: "+money(goal.target);
-  $("percentDisplay").textContent = percent+"% of the goal";
-  $("goalProgress").style.width = percent+"%";
+  $("targetDisplay").textContent = "Target: " + money(goal.target);
+  $("percentDisplay").textContent = percent + "% of the goal";
+  $("goalProgress").style.width = percent + "%";
 
   $("homeGoalName").textContent = goal.name || "Our shared dream";
   $("homeSaved").textContent = money(goal.saved);
   $("homeTarget").textContent = goal.target
-    ? "Target: "+money(goal.target)
+    ? "Target: " + money(goal.target)
     : "Start with your first goal";
-  $("homeProgress").style.width = percent+"%";
+  $("homeProgress").style.width = percent + "%";
 
   $("contributionList").innerHTML = state.contributions.length
-    ? [...state.contributions].reverse().map(item=>`
+    ? [...state.contributions].reverse().map(item => `
       <div class="item">
         <strong>${money(item.amount)}</strong>
         <span class="muted">${escapeHTML(item.date)}</span>
@@ -1061,11 +1417,207 @@ function renderGoal() {
     : '<p class="muted">Your first step starts here.</p>';
 }
 
+/* Calendar */
+
+function eventsOnDate(dateString) {
+  return events.filter(item => item.date === dateString);
+}
+
+function renderCalendar() {
+  const firstDay = new Date(calendarYear, calendarMonth, 1);
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const startDay = firstDay.getDay();
+  const previousMonthDays = new Date(calendarYear, calendarMonth, 0).getDate();
+
+  $("calendarMonth").textContent = new Date(calendarYear, calendarMonth, 1)
+    .toLocaleDateString("en", {month:"long", year:"numeric"});
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let html = dayNames.map(day =>
+    `<div class="calendar-day-name">${day}</div>`
+  ).join("");
+
+  for (let i = 0; i < 42; i++) {
+    let date;
+    let outside = false;
+
+    if (i < startDay) {
+      date = new Date(calendarYear, calendarMonth - 1, previousMonthDays - startDay + i + 1);
+      outside = true;
+    } else if (i >= startDay + daysInMonth) {
+      date = new Date(calendarYear, calendarMonth + 1, i - startDay - daysInMonth + 1);
+      outside = true;
+    } else {
+      date = new Date(calendarYear, calendarMonth, i - startDay + 1);
+    }
+
+    const dateString = localDateString(date);
+    const dayEvents = eventsOnDate(dateString);
+    const todayClass = dateString === localDateString(new Date()) ? " today" : "";
+    const selectedClass = dateString === selectedDate ? " selected" : "";
+    const eventClass = dayEvents.length ? " has-event" : "";
+
+    html += `
+      <button type="button"
+        class="calendar-day${outside ? " outside" : ""}${todayClass}${selectedClass}${eventClass}"
+        data-select-date="${dateString}">
+        <span class="day-number">${date.getDate()}</span>
+        ${dayEvents.length ? `<span class="event-count">${dayEvents.length} event${dayEvents.length === 1 ? "" : "s"}</span>` : ""}
+      </button>
+    `;
+  }
+
+  $("calendarGrid").innerHTML = html;
+  $("selectedDateTitle").textContent = new Date(selectedDate + "T12:00:00")
+    .toLocaleDateString("en", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+
+  $("eventDate").value = selectedDate;
+  renderSelectedDayEvents();
+  renderAllEvents();
+  renderHomeEvents();
+}
+
+$("calendarGrid").addEventListener("click", event => {
+  const button = event.target.closest("[data-select-date]");
+  if (!button) return;
+
+  selectedDate = button.dataset.selectDate;
+  const date = new Date(selectedDate + "T12:00:00");
+  calendarYear = date.getFullYear();
+  calendarMonth = date.getMonth();
+  renderCalendar();
+});
+
+$("previousMonth").addEventListener("click", () => {
+  calendarMonth--;
+  if (calendarMonth < 0) {
+    calendarMonth = 11;
+    calendarYear--;
+  }
+  renderCalendar();
+});
+
+$("nextMonth").addEventListener("click", () => {
+  calendarMonth++;
+  if (calendarMonth > 11) {
+    calendarMonth = 0;
+    calendarYear++;
+  }
+  renderCalendar();
+});
+
+$("todayButton").addEventListener("click", () => {
+  const now = new Date();
+  selectedDate = localDateString(now);
+  calendarYear = now.getFullYear();
+  calendarMonth = now.getMonth();
+  renderCalendar();
+});
+
+$("eventForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const title = $("eventTitle").value.trim();
+  const date = $("eventDate").value;
+  if (!title || !date) {
+    toast("Enter an event title and date.", true);
+    return;
+  }
+
+  events.push({
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    title,
+    date,
+    time: $("eventTime").value,
+    note: $("eventNote").value.trim()
+  });
+
+  if (saveEvents()) {
+    selectedDate = date;
+    const parsed = new Date(date + "T12:00:00");
+    calendarYear = parsed.getFullYear();
+    calendarMonth = parsed.getMonth();
+    event.target.reset();
+    renderCalendar();
+    toast("Event saved on this device. ♡");
+  }
+});
+
+function eventMarkup(item) {
+  return `
+    <div class="item">
+      <span class="pill">${escapeHTML(item.date)}${item.time ? " · " + escapeHTML(item.time) : ""}</span>
+      <h3>${escapeHTML(item.title)}</h3>
+      ${item.note ? `<p class="muted">${escapeHTML(item.note)}</p>` : ""}
+      <button class="link-button" type="button" data-delete-event="${escapeHTML(item.id)}">Remove event</button>
+    </div>
+  `;
+}
+
+function renderSelectedDayEvents() {
+  const dayEvents = eventsOnDate(selectedDate).sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+
+  $("selectedDayEvents").innerHTML = dayEvents.length
+    ? dayEvents.map(eventMarkup).join("")
+    : '<p class="muted">Nothing planned for this day yet.</p>';
+}
+
+function renderAllEvents() {
+  const todayString = localDateString(new Date());
+  const upcoming = events.filter(item => item.date >= todayString)
+    .sort((a, b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""));
+
+  $("allEvents").innerHTML = upcoming.length
+    ? upcoming.map(eventMarkup).join("")
+    : '<p class="muted">No upcoming events. Add a date to look forward to. ♡</p>';
+}
+
+function renderHomeEvents() {
+  const todayString = localDateString(new Date());
+  const upcoming = events.filter(item => item.date >= todayString)
+    .sort((a, b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || ""))
+    .slice(0, 3);
+
+  $("homeEvents").innerHTML = upcoming.length
+    ? upcoming.map(item => `
+      <div class="item">
+        <span class="pill">${escapeHTML(item.date)}${item.time ? " · " + escapeHTML(item.time) : ""}</span>
+        <strong>${escapeHTML(item.title)}</strong>
+      </div>
+    `).join("")
+    : '<p class="muted">Your next special moment can go here.</p>';
+}
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("[data-delete-event]");
+  if (!button) return;
+
+  if (!confirm("Remove this calendar event?")) return;
+  events = events.filter(item => item.id !== button.dataset.deleteEvent);
+
+  if (saveEvents()) {
+    renderCalendar();
+    toast("Event removed.");
+  }
+});
+
+/* Initial render */
+
 loadState();
-renderMemories();
+renderProfile();
+renderHomeMemories();
+renderMedia();
 renderChats();
 renderGoal();
-updateGreeting();
+renderCalendar();
+
+/* Progressive Web App service worker */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.error("Service worker registration failed:", error));
+  });
+}
 </script>
 </body>
 </html>
