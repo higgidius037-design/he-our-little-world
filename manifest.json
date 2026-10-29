@@ -1,0 +1,11 @@
+{
+  "name": "H&E — Our Little World",
+  "short_name": "H&E",
+  "description": "Our memories, conversations and shared dreams.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff9f1",
+  "theme_color": "#310b14",
+  "icons": []
+}
